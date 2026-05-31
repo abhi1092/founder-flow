@@ -1,5 +1,7 @@
 # FounderFlow
 
+[![Built with re;factory](https://img.shields.io/badge/built%20with-re%3Bfactory-blueviolet)](https://github.com/akashgit/remote-factory)
+
 **Treat your startup idea as a research hypothesis. Validate it before you build it.**
 
 FounderFlow is a multi-agent CLI tool that validates startup ideas through an iterative research loop. Three specialist agents fan out in parallel — idea validation, competitor analysis, customer discovery — then an Evidence Integrator identifies gaps and sends agents back for deeper investigation until evidence converges. The output is a polished, self-contained HTML Startup Validation Research Brief with contradictions exposed, assumptions surfaced, and a concrete 7-day action plan.
@@ -322,3 +324,7 @@ ruff format .
 - **Models are strict.** Every Pydantic model uses `strict=True, extra="forbid"`. If you add a field, update the model.
 - **Events are append-only.** Never modify `events.jsonl` — only append.
 - **State is detected, not asserted.** `detect_state()` reads filesystem markers to determine run state. If `state.json` is corrupted, the system self-heals.
+
+## Built With
+
+This project was designed, built, and validated by [re;factory](https://github.com/akashgit/remote-factory) — a domain-agnostic multi-agent software design and evolution harness. re;factory orchestrated the full lifecycle: ideation research, spec distillation, phased build plan, code generation across 7 build phases, code review, and E2E verification — all through its CEO agent coordinating specialist agents (Researcher, Strategist, Builder, Archivist).
