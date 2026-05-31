@@ -1,0 +1,13 @@
+{
+  "thesis_statement": "Unable to produce a definitive thesis — integrator did not return structured output",
+  "confidence_score": 0,
+  "verdict": "deeper",
+  "contradictions": [],
+  "unresolved_assumptions": [
+    "Integrator output could not be parsed"
+  ],
+  "risk_assessment": "Assessment could not be completed",
+  "research_journey_summary": "Completed 1 round(s) of research",
+  "total_rounds": 1,
+  "convergence_reason": "max_rounds"
+}

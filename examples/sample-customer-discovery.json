@@ -1,0 +1,39 @@
+{
+  "interview_targets": [
+    "Solo practice owners/dentists with 1-5 employees generating $700K-$1M annually \u2014 find them via American Dental Association local chapters, state dental associations (e.g., CDA, NYDA), and LinkedIn groups like 'Independent Dental Practice Owners'",
+    "Dental office managers at independent clinics \u2014 find them via r/dentalofficemanagers (if exists), LinkedIn search for 'dental office manager' filtered by 'small business', and Facebook groups like 'Dental Office Managers Network'",
+    "Front desk staff at independent dental practices \u2014 reach via job boards (Indeed, ZipRecruiter) by filtering for 'dental receptionist' at small practices, and local dental staffing agencies",
+    "Avoid: DSO-employed staff (corporate processes differ), dental consultants (will say 'great idea' reflexively), and dentists at large multi-location groups (different buying process)"
+  ],
+  "discovery_questions": [
+    "Walk me through what happened the last time your front desk was overwhelmed with calls. What did you do? What did patients experience?",
+    "How many calls would you estimate you miss in a typical week? What happens to those missed calls \u2014 do patients call back, leave voicemails, or go elsewhere?",
+    "Tell me about a specific patient you lost to another practice in the last 3 months. What was the situation?",
+    "What tools or systems have you tried in the past year to handle phone calls or appointment reminders? What happened? Are you still using them? If not, why did you stop?",
+    "When you last hired a front desk person, how long did it take to hire and train them? What did that cost you in time and money?",
+    "How much do you currently spend per month on phone systems, patient communication tools, and front desk staffing combined? Walk me through the breakdown.",
+    "If you could wave a magic wand and fix one thing about how your practice handles phone calls, what would it be? Why that specific thing?",
+    "Have you ever looked into AI receptionists or answering services before? If yes: what stopped you from buying? If no: have you heard of them? What do you think about them?",
+    "What would need to be true for you to consider replacing or supplementing your current phone system? What's your biggest concern about making that kind of change?",
+    "Tell me about the last time a patient left a negative review about difficulty reaching your office. What happened?"
+  ],
+  "demand_signals": [
+    "32% of dental calls go unanswered during business hours (Reach), with practices missing an average of 300 calls/month, 80% related to appointment booking \u2014 quantified pain point with revenue impact of $850 per missed new patient call",
+    "15+ AI receptionist platforms actively marketing to dental practices in 2025-2026, including Y Combinator-backed Arini, Weave's TrueLark acquisition (May 2025), and funded players like Savvy Agents and Dentina.AI \u2014 indicates venture capital validation and competitive market formation",
+    "60% of dental offices report staff shortages as primary reason for missed calls (Dental Economics survey) \u2014 hiring pain point creates switching motivation from human-only to AI-augmented models",
+    "Google Trends data needed (not found in search): search volume for 'dental AI receptionist', 'dental answering service', 'dental appointment reminders' would validate consumer/practitioner awareness",
+    "78% of patients hang up without leaving voicemail when reaching answering machine, and 67% immediately call another practice \u2014 high patient switching cost to practice = strong economic incentive to solve",
+    "Practices report 'dozens of after-hours appointments booked within first two months' and '10-15 hours/week reduction in front desk overtime' from AI receptionist pilots \u2014 early adopter testimonials indicate measurable ROI"
+  ],
+  "weak_signal_warnings": [
+    "Extremely crowded market (15+ competitors identified in 2025-2026) with pricing compression ($65-$800/month) \u2014 late entrant faces customer acquisition cost and differentiation challenges without unique integration or vertical specialization",
+    "High switching costs ($18K-$50K+ for PMS migration) create lock-in to existing all-in-one platforms like Weave, RevenueWell, and Adit that already bundle AI receptionist features \u2014 independent point solution must overcome 'why add another vendor?' objection",
+    "Industry skepticism documented: RevUp Dental published article titled 'AI Dental Receptionists - The Latest Grift' citing disappointed adopters post-honeymoon period, and PeerLogic article 'The Intelligence Gap' argues basic AI receptionists cost practices more than they save \u2014 suggests product-market fit is unproven for mid-tier solutions",
+    "PMS integration depth is the #1 differentiation axis per TensorLinks research, but integration requires partnerships with Dentrix, Eaglesoft, Open Dental, etc. \u2014 without these, product is 'message-taking service' not 'booking automation', limiting value prop",
+    "Search found zero evidence of failed AI dental receptionist startups 2023-2024, which is unusual in a crowded space \u2014 could indicate (a) market too new for failures yet, (b) survivorship bias in search results, or (c) low startup formation relative to incumbent feature launches",
+    "Average independent practice revenue is $700K-$1M with 25-30% personnel costs \u2014 $300-$500/month AI receptionist is 5-8% of a front desk salary (~$35K/year), not a full replacement \u2014 practices may view as 'nice to have' add-on rather than 'must have' cost saver unless it demonstrably reduces headcount"
+  ],
+  "validation_experiment": "Run a 2-week concierge MVP targeting 5 independent dental practices in a single metro area. Manually answer their after-hours calls (5pm-9am) using a dedicated phone number that forwards to your cell. Track: (1) total after-hours calls received per practice, (2) % that are appointment-booking vs. emergencies vs. spam, (3) % you successfully book into their calendar (requires them to give you PMS access or accept manual email handoffs), (4) patient satisfaction (ask the practice to survey patients who booked via you). Success criteria: If \u22653 practices book \u226510 appointments in 2 weeks AND \u226580% of patients rate the experience 'good' or 'excellent' AND \u22652 practices say they'd pay $300-400/month for the automated version, proceed to build. If practices refuse PMS access or won't do the email handoff work, that's a critical failure signal (integration is non-negotiable). Cost: $0 (your time) + $15 (Google Voice number). Timeline: 2 weeks. Outreach: Cold email 50 practices within 10 miles offering 'free after-hours answering trial' \u2014 if <10% respond, demand signal is weaker than search data suggests.",
+  "confidence_score": 72,
+  "summary": "Strong validated pain point (32% missed calls, $150K annual revenue loss per practice, documented staffing shortages) but extremely crowded market with 15+ funded competitors and high switching costs ($18K-$50K) favoring incumbent all-in-one platforms. Market skepticism exists (RevUp Dental's 'grift' article, PeerLogic's 'cost more than they save' critique), and PMS integration depth is the key moat \u2014 without Dentrix/Eaglesoft/Open Dental partnerships, you're a message service, not a booking automation tool. Validate via concierge MVP focused on after-hours calls with real PMS integration to test whether practices will actually grant access and whether ROI is measurable."
+}

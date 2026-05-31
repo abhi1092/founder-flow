@@ -4,6 +4,8 @@
 
 FounderFlow is a multi-agent CLI tool that validates startup ideas through an iterative research loop. Three specialist agents fan out in parallel — idea validation, competitor analysis, customer discovery — then an Evidence Integrator identifies gaps and sends agents back for deeper investigation until evidence converges. The output is a polished, self-contained HTML Startup Validation Research Brief with contradictions exposed, assumptions surfaced, and a concrete 7-day action plan.
 
+**[Watch the demo video](https://drive.google.com/file/d/1E2lUUseWs7XgcXygnMyRUUozf14bNDGp/view?usp=sharing)** | **[View a sample brief](examples/sample-brief.html)**
+
 ## How It Works
 
 FounderFlow models startup validation as a research process: your idea is the hypothesis, each agent is a research assistant covering a different dimension, and the Evidence Integrator is your research advisor who decides when the evidence is strong enough — or where to dig deeper.
