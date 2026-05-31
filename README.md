@@ -1,6 +1,6 @@
 # FounderFlow
 
-[![Built with re;factory](https://img.shields.io/badge/built%20with-re%3Bfactory-blueviolet)](https://github.com/akashgit/remote-factory)
+[![Built with re:factory](https://img.shields.io/badge/built%20with-re%3Afactory-blueviolet)](https://github.com/akashgit/remote-factory)
 
 **Treat your startup idea as a research hypothesis. Validate it before you build it.**
 
@@ -327,4 +327,4 @@ ruff format .
 
 ## Built With
 
-This project was designed, built, and validated by [re;factory](https://github.com/akashgit/remote-factory) — a domain-agnostic multi-agent software design and evolution harness. re;factory orchestrated the full lifecycle: ideation research, spec distillation, phased build plan, code generation across 7 build phases, code review, and E2E verification — all through its CEO agent coordinating specialist agents (Researcher, Strategist, Builder, Archivist).
+This project was designed, built, and validated by [re:factory](https://github.com/akashgit/remote-factory) — a domain-agnostic multi-agent software design and evolution harness. re:factory orchestrated the full lifecycle: ideation research, spec distillation, phased build plan, code generation across 7 build phases, code review, and E2E verification — all through its CEO agent coordinating specialist agents (Researcher, Strategist, Builder, Archivist).
