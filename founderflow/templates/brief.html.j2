@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FounderFlow Brief — {{ idea[:60] }}</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: #f3f4f6; color: #1f2937; line-height: 1.6; padding: 2rem 1rem;
+  }
+  .container { max-width: 800px; margin: 0 auto; }
+  .card {
+    background: #fff; border-radius: 12px; padding: 1.5rem 2rem;
+    margin-bottom: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+  h2 { font-size: 1.15rem; font-weight: 600; margin-bottom: 0.75rem; color: #374151; }
+  h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: #4b5563; }
+  .meta { font-size: 0.85rem; color: #6b7280; margin-bottom: 1rem; }
+  .badge {
+    display: inline-block; padding: 0.25rem 0.75rem; border-radius: 999px;
+    font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;
+    color: #fff;
+  }
+  .badge-go { background: #22c55e; }
+  .badge-deeper { background: #eab308; color: #1f2937; }
+  .badge-pivot { background: #ef4444; }
+  .badge-kill { background: #ef4444; }
+  .confidence-bar {
+    width: 100%; height: 8px; background: #e5e7eb; border-radius: 4px;
+    margin: 0.5rem 0; overflow: hidden;
+  }
+  .confidence-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
+  .confidence-label { font-size: 0.85rem; color: #6b7280; }
+  .section-title { border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+  ul { padding-left: 1.25rem; margin-bottom: 0.75rem; }
+  li { margin-bottom: 0.35rem; }
+  .risk-item { padding: 0.5rem 0.75rem; border-left: 3px solid #ef4444; background: #fef2f2; margin-bottom: 0.5rem; border-radius: 0 6px 6px 0; font-size: 0.9rem; }
+  .warning-item { padding: 0.5rem 0.75rem; border-left: 3px solid #eab308; background: #fefce8; margin-bottom: 0.5rem; border-radius: 0 6px 6px 0; font-size: 0.9rem; }
+  details { margin-bottom: 0.75rem; }
+  summary { cursor: pointer; font-weight: 600; padding: 0.5rem 0; color: #374151; }
+  summary:hover { color: #111827; }
+  .round-info { padding: 0.75rem 1rem; background: #f9fafb; border-radius: 8px; margin: 0.5rem 0; font-size: 0.9rem; }
+  .round-info strong { color: #374151; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+  th { text-align: left; padding: 0.6rem 0.75rem; background: #f9fafb; border-bottom: 2px solid #e5e7eb; font-size: 0.85rem; color: #6b7280; font-weight: 600; }
+  td { padding: 0.6rem 0.75rem; border-bottom: 1px solid #f3f4f6; font-size: 0.9rem; }
+  tr:last-child td { border-bottom: none; }
+  .cost-footer { font-size: 0.85rem; color: #6b7280; text-align: center; padding-top: 1rem; }
+  .cost-footer strong { color: #374151; }
+  .tag { display: inline-block; background: #e5e7eb; color: #374151; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin: 0.15rem 0.15rem; }
+  .summary-text { font-size: 0.95rem; color: #4b5563; margin-bottom: 0.75rem; }
+  @media (max-width: 600px) {
+    body { padding: 1rem 0.5rem; }
+    .card { padding: 1rem 1.25rem; }
+    h1 { font-size: 1.25rem; }
+    table { font-size: 0.8rem; }
+    th, td { padding: 0.4rem 0.5rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="card">
+    <h1>{{ idea }}</h1>
+    <div class="meta">Generated {{ generated_at }} &middot; {{ thesis.total_rounds }} round{{ "s" if thesis.total_rounds != 1 else "" }} &middot; {{ thesis.convergence_reason.value | replace("_", " ") }}</div>
+    <span class="badge badge-{{ thesis.verdict.value }}">{{ thesis.verdict.value | upper }}</span>
+  </div>
+
+  <!-- Verdict Panel -->
+  <div class="card">
+    <h2 class="section-title">Verdict</h2>
+    <p class="summary-text">{{ thesis.thesis_statement }}</p>
+    <div>
+      <span class="confidence-label">Confidence: {{ thesis.confidence_score }}%</span>
+      <div class="confidence-bar">
+        <div class="confidence-fill" style="width: {{ thesis.confidence_score }}%; background: {% if thesis.confidence_score >= 70 %}#22c55e{% elif thesis.confidence_score >= 40 %}#eab308{% else %}#ef4444{% endif %};"></div>
+      </div>
+    </div>
+    {% if thesis.research_journey_summary %}
+    <p class="summary-text" style="margin-top: 0.75rem;">{{ thesis.research_journey_summary }}</p>
+    {% endif %}
+  </div>
+
+  <!-- Idea Validation -->
+  <div class="card">
+    <h2 class="section-title">Idea Validation</h2>
+    <p class="summary-text">{{ idea_validation.summary }}</p>
+    <h3>Problem Severity</h3>
+    <p style="margin-bottom: 0.75rem;">{{ idea_validation.problem_severity }}</p>
+    <h3>Target Customer</h3>
+    <p style="margin-bottom: 0.75rem;">{{ idea_validation.target_customer_clarity }}</p>
+    <h3>Value Proposition</h3>
+    <p style="margin-bottom: 0.75rem;">{{ idea_validation.value_proposition_strength }}</p>
+    {% if idea_validation.risk_factors %}
+    <h3>Risk Factors</h3>
+    {% for risk in idea_validation.risk_factors %}
+    <div class="risk-item">{{ risk }}</div>
+    {% endfor %}
+    {% endif %}
+    {% if idea_validation.core_assumptions %}
+    <h3>Core Assumptions</h3>
+    <ul>
+    {% for a in idea_validation.core_assumptions %}
+      <li>{{ a }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    <span class="confidence-label">Confidence: {{ idea_validation.confidence_score }}%</span>
+  </div>
+
+  <!-- Competitor Analysis -->
+  <div class="card">
+    <h2 class="section-title">Competitor Analysis</h2>
+    <p class="summary-text">{{ competitor_analysis.summary }}</p>
+    {% if competitor_analysis.direct_competitors %}
+    <h3>Direct Competitors</h3>
+    <ul>
+    {% for c in competitor_analysis.direct_competitors %}
+      <li>{{ c.get("name", c | string) }}{% if c.get("description") %} &mdash; {{ c.description }}{% endif %}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% if competitor_analysis.indirect_competitors %}
+    <h3>Indirect Competitors</h3>
+    <ul>
+    {% for c in competitor_analysis.indirect_competitors %}
+      <li>{{ c.get("name", c | string) }}{% if c.get("description") %} &mdash; {{ c.description }}{% endif %}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% if competitor_analysis.substitutes %}
+    <h3>Substitutes</h3>
+    <ul>{% for s in competitor_analysis.substitutes %}<li>{{ s }}</li>{% endfor %}</ul>
+    {% endif %}
+    {% if competitor_analysis.positioning_gaps %}
+    <h3>Positioning Gaps</h3>
+    <ul>{% for g in competitor_analysis.positioning_gaps %}<li>{{ g }}</li>{% endfor %}</ul>
+    {% endif %}
+    <span class="confidence-label">Confidence: {{ competitor_analysis.confidence_score }}%</span>
+  </div>
+
+  <!-- Customer Discovery -->
+  <div class="card">
+    <h2 class="section-title">Customer Discovery</h2>
+    <p class="summary-text">{{ customer_discovery.summary }}</p>
+    {% if customer_discovery.discovery_questions %}
+    <h3>Discovery Questions</h3>
+    <ul>{% for q in customer_discovery.discovery_questions %}<li>{{ q }}</li>{% endfor %}</ul>
+    {% endif %}
+    {% if customer_discovery.demand_signals %}
+    <h3>Demand Signals</h3>
+    <ul>{% for d in customer_discovery.demand_signals %}<li>{{ d }}</li>{% endfor %}</ul>
+    {% endif %}
+    {% if customer_discovery.weak_signal_warnings %}
+    <h3>Weak Signal Warnings</h3>
+    {% for w in customer_discovery.weak_signal_warnings %}
+    <div class="warning-item">{{ w }}</div>
+    {% endfor %}
+    {% endif %}
+    {% if customer_discovery.validation_experiment %}
+    <h3>Validation Experiment</h3>
+    <p style="margin-bottom: 0.5rem;">{{ customer_discovery.validation_experiment }}</p>
+    {% endif %}
+    <span class="confidence-label">Confidence: {{ customer_discovery.confidence_score }}%</span>
+  </div>
+
+  <!-- Risk Assessment -->
+  {% if thesis.contradictions or thesis.unresolved_assumptions or thesis.risk_assessment %}
+  <div class="card">
+    <h2 class="section-title">Risk Assessment</h2>
+    {% if thesis.risk_assessment %}
+    <p class="summary-text">{{ thesis.risk_assessment }}</p>
+    {% endif %}
+    {% if thesis.contradictions %}
+    <h3>Contradictions</h3>
+    {% for c in thesis.contradictions %}
+    <div class="risk-item">{{ c }}</div>
+    {% endfor %}
+    {% endif %}
+    {% if thesis.unresolved_assumptions %}
+    <h3>Unresolved Assumptions</h3>
+    {% for u in thesis.unresolved_assumptions %}
+    <div class="warning-item">{{ u }}</div>
+    {% endfor %}
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <!-- Research Loop Timeline -->
+  {% if round_results %}
+  <div class="card">
+    <h2 class="section-title">Research Loop Timeline</h2>
+    {% for rr in round_results %}
+    <details{% if loop.last %} open{% endif %}>
+      <summary>Round {{ rr.round_num }} &mdash; {{ rr.active_agents | length }} agent{{ "s" if rr.active_agents | length != 1 else "" }} &middot; {{ rr.directive.verdict.value | replace("_", " ") }}</summary>
+      <div class="round-info">
+        <strong>Agents:</strong>
+        {% for a in rr.active_agents %}<span class="tag">{{ a.value }}</span>{% endfor %}
+        <br>
+        <strong>Started:</strong> {{ rr.started_at }} &middot; <strong>Completed:</strong> {{ rr.completed_at }}
+        <br>
+        <strong>Confidence:</strong> {{ rr.directive.round_confidence }}%
+        {% if rr.directive.remaining_gaps %}
+        <br><strong>Gaps:</strong> {{ rr.directive.remaining_gaps | join("; ") }}
+        {% endif %}
+        {% if rr.directive.resolved_contradictions %}
+        <br><strong>Resolved:</strong> {{ rr.directive.resolved_contradictions | join("; ") }}
+        {% endif %}
+        {% if rr.usage %}
+        <br><strong>Cost:</strong> ${{ "%.4f" | format(rr.usage.total_cost_usd) }} &middot; {{ rr.usage.input_tokens + rr.usage.output_tokens }} tokens
+        {% endif %}
+      </div>
+    </details>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- 7-Day Action Plan -->
+  {% if action_plan %}
+  <div class="card">
+    <h2 class="section-title">7-Day Action Plan</h2>
+    <table>
+      <thead><tr><th>Day</th><th>Action</th><th>Details</th></tr></thead>
+      <tbody>
+      {% for item in action_plan %}
+        <tr><td style="white-space: nowrap; font-weight: 600;">Day {{ item.day }}</td><td>{{ item.action }}</td><td>{{ item.details }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+
+  <!-- Cost Summary -->
+  <div class="card cost-footer">
+    <strong>Total Cost:</strong> ${{ "%.4f" | format(cost_summary.total_cost_usd) }}
+    &middot; {{ cost_summary.total_input_tokens }} input tokens
+    &middot; {{ cost_summary.total_output_tokens }} output tokens
+    {% if cost_summary.per_round %}
+    <br>
+    {% for ru in cost_summary.per_round %}
+    Round {{ loop.index }}: ${{ "%.4f" | format(ru.total_cost_usd) }}{% if not loop.last %} &middot; {% endif %}
+    {% endfor %}
+    {% endif %}
+    <br><em>Generated by FounderFlow</em>
+  </div>
+
+</div>
+</body>
+</html>
