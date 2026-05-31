@@ -132,9 +132,61 @@ def build_task_prompt(
     return "\n\n---\n\n".join(parts)
 
 
+def _find_all_json_objects(text: str) -> list[dict]:
+    """Scan *text* and extract all top-level JSON objects by brace matching.
+
+    Returns a list of parsed dicts (in order of appearance).  Ignores
+    braces that appear inside JSON strings.
+    """
+    results: list[dict] = []
+    i = 0
+    while i < len(text):
+        if text[i] != "{":
+            i += 1
+            continue
+        depth = 0
+        in_string = False
+        escape = False
+        start = i
+        for j in range(i, len(text)):
+            ch = text[j]
+            if escape:
+                escape = False
+                continue
+            if ch == "\\":
+                if in_string:
+                    escape = True
+                continue
+            if ch == '"' and not escape:
+                in_string = not in_string
+                continue
+            if in_string:
+                continue
+            if ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if depth == 0:
+                    candidate = text[start : j + 1]
+                    try:
+                        results.append(json.loads(candidate))
+                    except json.JSONDecodeError:
+                        pass
+                    i = j + 1
+                    break
+        else:
+            break
+    return results
+
+
 def _extract_json(text: str) -> dict:
-    """Extract JSON from agent response, handling markdown fences."""
+    """Extract JSON from agent response.
+
+    Handles: pure JSON, markdown-fenced JSON, and JSON embedded in prose.
+    """
     stripped = text.strip()
+
+    # 1. Markdown fences
     if stripped.startswith("```"):
         lines = stripped.split("\n")
         start = 1
@@ -145,7 +197,18 @@ def _extract_json(text: str) -> dict:
                 break
         stripped = "\n".join(lines[start:end])
 
-    return json.loads(stripped)
+    # 2. Try direct parse (pure JSON)
+    try:
+        return json.loads(stripped)
+    except json.JSONDecodeError:
+        pass
+
+    # 3. Brace-matching: find first JSON object embedded in prose
+    objects = _find_all_json_objects(stripped)
+    if objects:
+        return objects[0]
+
+    raise json.JSONDecodeError("No JSON object found in text", text, 0)
 
 
 def _parse_agent_output(
@@ -157,17 +220,73 @@ def _parse_agent_output(
     Uses strict=False because agent JSON contains string enum values, not
     Python enum instances.
     """
-    data = _extract_json(text)
-
     if role == AgentRole.evidence_integrator:
-        raw = data.get("research_directive", data)
-        return ResearchDirective.model_validate(raw, strict=False)
+        return _parse_integrator_output(text)
 
+    data = _extract_json(text)
     model_cls = ROLE_TO_MODEL.get(role)
     if model_cls is None:
         return data
 
     return model_cls.model_validate(data, strict=False)
+
+
+def _parse_integrator_output(text: str) -> dict | ResearchDirective:
+    """Parse integrator output, finding both research_directive and validation_thesis.
+
+    The integrator may return:
+    - A single JSON with both keys: {"research_directive": {...}, "validation_thesis": {...}}
+    - Two separate JSON blocks in the text
+    - A single research_directive JSON (non-terminal rounds)
+
+    Returns a dict with both keys when both are found, otherwise a
+    ResearchDirective for backward compatibility.
+    """
+    # Try the standard extraction first (handles fences, pure JSON, first-object)
+    try:
+        data = _extract_json(text)
+    except (json.JSONDecodeError, ValueError):
+        data = {}
+
+    # Single wrapper with both keys
+    if "research_directive" in data and "validation_thesis" in data:
+        return data
+
+    # Single wrapper with just research_directive
+    if "research_directive" in data and "validation_thesis" not in data:
+        return ResearchDirective.model_validate(
+            data["research_directive"], strict=False
+        )
+
+    # The first object might BE a research_directive (no wrapper key)
+    # Before falling back, try to find multiple JSON objects in the text
+    all_objects = _find_all_json_objects(text)
+
+    if len(all_objects) >= 2:
+        result: dict[str, Any] = {}
+        for obj in all_objects:
+            if "research_directive" in obj:
+                result["research_directive"] = obj["research_directive"]
+            elif "validation_thesis" in obj:
+                result["validation_thesis"] = obj["validation_thesis"]
+            elif "verdict" in obj and "directives" in obj:
+                result["research_directive"] = obj
+            elif "thesis_statement" in obj:
+                result["validation_thesis"] = obj
+        if "research_directive" in result:
+            return result
+
+    # Fallback: single object is the directive itself
+    if data and "verdict" in data:
+        return ResearchDirective.model_validate(data, strict=False)
+
+    # Last resort: first extracted object
+    if all_objects:
+        raw = all_objects[0]
+        rd = raw.get("research_directive", raw)
+        return ResearchDirective.model_validate(rd, strict=False)
+
+    raise json.JSONDecodeError("No JSON object found in integrator output", text, 0)
 
 
 async def run_agent(

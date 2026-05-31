@@ -97,3 +97,12 @@ Verdict guidelines:
 - **deeper**: Promising signals but critical assumptions remain untested. More research or customer conversations needed before committing.
 - **pivot**: Core idea has merit but current positioning/market/approach has fatal flaws. Suggest specific pivot direction.
 - **kill**: Fundamental problems — no real demand, insurmountable competition, or unfixable market dynamics. Don't kill ideas lightly; require strong negative evidence.
+
+## Output Rules
+
+Your response MUST contain exactly ONE JSON object — no prose before or after it, no markdown fences.
+
+- **Non-terminal rounds:** Output a single JSON object with the `research_directive` fields at the top level (verdict, directives, resolved_contradictions, remaining_gaps, round_confidence).
+- **Terminal/final rounds:** Output a single JSON object with two top-level keys: `"research_directive"` and `"validation_thesis"`, each containing their respective fields as shown in the schemas above.
+
+Do NOT wrap JSON in markdown code fences. Do NOT add explanatory text before or after the JSON. Output ONLY the JSON object.
